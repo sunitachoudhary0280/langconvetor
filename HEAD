@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 e2d2574f9c6b44c868a40f2d2a55a7c944c503ba Divyendra Singh <divy2009@gmail.com> 1723558843 +0530	commit (initial): Packaging my toys to heroku
+e2d2574f9c6b44c868a40f2d2a55a7c944c503ba e2d2574f9c6b44c868a40f2d2a55a7c944c503ba Divyendra Singh <divy2009@gmail.com> 1723559480 +0530	checkout: moving from master to main
+e2d2574f9c6b44c868a40f2d2a55a7c944c503ba 505e41586f573a47adc171ac7d9761d774a2b022 Divyendra Singh <divy2009@gmail.com> 1723559491 +0530	commit: Initial commit for Heroku deployment
+505e41586f573a47adc171ac7d9761d774a2b022 95c89c239d33e90781a62eba9a9f4a38c85ed366 Divyendra Singh <divy2009@gmail.com> 1723560768 +0530	commit: Updated Flask app and index file with new design and functionality
+95c89c239d33e90781a62eba9a9f4a38c85ed366 645dd3381e8256cd64478389a42de5d1787fcb35 Divyendra Singh <divy2009@gmail.com> 1723570173 +0530	commit: Updated the design and another page
