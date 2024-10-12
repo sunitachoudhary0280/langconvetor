@@ -12,7 +12,14 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
+#Important Note
+Before running the application, ensure you have your own API keys:
 
+Groq API Key: Obtain your API key from the Groq platform and replace the placeholder in the app.py file.
+ELEVENLABS_API_KEY&ElevenLabs Voice Key: Sign up at ElevenLabs to get your voice ID and replace the placeholder in the app.py file.
+Make sure to keep your keys confidential and do not share them publicly.
+
+    
 # Groq API key
 groq_api_key = os.environ.get("GROQ_API_KEY", " use your groq api key ")
 client = Groq(api_key=groq_api_key)
