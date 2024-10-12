@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TranslateAI - Real Time Bidirectional Audio Translation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+      :root {
+        --primary-color: #4a5568;
+        --secondary-color: #667eea;
+        --background-color: #f7fafc;
+        --card-background: #ffffff;
+        --text-color: #2d3748;
+        --border-radius: 8px;
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+        border-radius: var(--border-radius);
+        margin-bottom: 40px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto 30px;
+      }
+
+      .cta-button {
+        background-color: white;
+        color: var(--secondary-color);
+        padding: 12px 24px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: var(--transition);
+        display: inline-block;
+      }
+
+      .cta-button:hover {
+        background-color: var(--secondary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .features {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .feature {
+        background-color: var(--card-background);
+        border-radius: var(--border-radius);
+        padding: 20px;
+        text-align: center;
+        flex: 1;
+        min-width: 250px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+      }
+
+      .feature:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      #app-interface {
+        display: none;
+        background-color: var(--card-background);
+        border-radius: var(--border-radius);
+        padding: 40px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      select,
+      button,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: var(--border-radius);
+        border: 1px solid #e2e8f0;
+        font-size: 16px;
+        transition: var(--transition);
+      }
+
+      select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234a5568' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+      }
+
+      button {
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      button:hover:not(:disabled) {
+        background-color: #5a67d8;
+        transform: translateY(-2px);
+      }
+
+      button:disabled {
+        background-color: #cbd5e0;
+        cursor: not-allowed;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .language-select {
+        display: flex;
+        gap: 20px;
+      }
+
+      .conversation {
+        display: flex;
+        gap: 20px;
+      }
+
+      .conversation-half {
+        flex: 1;
+      }
+
+      .text-area {
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        color: var(--primary-color);
+        margin-bottom: 10px;
+      }
+
+      #loading {
+        text-align: center;
+        color: var(--secondary-color);
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .conversation {
+          flex-direction: column;
+        }
+      }
+      
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="landing-page">
+        <div class="hero">
+          <h1>TranslateAI</h1>
+          <p>Advanced speech and video translation powered by AI</p>
+          <a href="#" class="cta-button" id="get-started-btn">Get Started</a>
+        </div>
+        <div class="features">
+          <div class="feature">
+            <h2>Speech Translation</h2>
+            <p>Real-time translation in over 100 languages</p>
+          </div>
+          <div class="feature">
+            <h2>Video Subtitles</h2>
+            <p>Automatic subtitles for your videos in any language</p>
+          </div>
+          <div class="feature">
+            <h2>AI-Powered Accuracy</h2>
+            <p>Context-aware translations for natural results</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="app-interface">
+        <h1>Bidirectional Speech Translator</h1>
+        <button id="back-to-home">Back to Home</button>
+        <div class="language-select">
+          <select id="user-language">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <!-- Add more common languages here -->
+          </select>
+          <select id="target-language">
+            {% for lang, code in languages.items() %}
+            <option value="{{ code }}">{{ lang }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="conversation">
+          <div class="conversation-half">
+            <button id="start-user">Start User Listening</button>
+            <button id="stop-user" disabled>Stop User Listening</button>
+            <div class="text-area">
+              <label for="user-text">User Speech:</label>
+              <textarea id="user-text" readonly></textarea>
+            </div>
+            <button id="speak-user">Speak User Translation</button>
+          </div>
+          <div class="conversation-half">
+            <button id="start-target">Start Target Listening</button>
+            <button id="stop-target" disabled>Stop Target Listening</button>
+            <div class="text-area">
+              <label for="target-text">Target Speech:</label>
+              <textarea id="target-text" readonly></textarea>
+            </div>
+            <button id="speak-target">Speak Target Translation</button>
+          </div>
+        </div>
+        <div id="loading" style="display: none">Translating...</div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        let userRecognition, targetRecognition;
+        let isUserListening = false,
+          isTargetListening = false;
+
+        function setupRecognition(recognition, language) {
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.lang = language;
+        }
+
+        function startListening(
+          recognition,
+          startButton,
+          stopButton,
+          textArea,
+          isListening,
+          sourceLang,
+          targetLang
+        ) {
+          if (!isListening) {
+            recognition.start();
+            isListening = true;
+            startButton.prop("disabled", true);
+            stopButton.prop("disabled", false);
+          }
+          return isListening;
+        }
+
+        function stopListening(
+          recognition,
+          startButton,
+          stopButton,
+          isListening
+        ) {
+          if (isListening) {
+            recognition.stop();
+            isListening = false;
+            startButton.prop("disabled", false);
+            stopButton.prop("disabled", true);
+          }
+          return isListening;
+        }
+
+        function translate(text, sourceLang, targetLang, textArea) {
+          $("#loading").show();
+          $.ajax({
+            url: "/translate",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+              text: text,
+              source_lang: sourceLang,
+              target_lang: targetLang,
+            }),
+            success: function (response) {
+              $("#loading").hide();
+              textArea.val(response.translated_text);
+              window[textArea.attr("id") + "_audio"] = response.audio_data;
+            },
+            error: function (xhr, status, error) {
+              $("#loading").hide();
+              console.error("Error:", error);
+              textArea.val(
+                "An error occurred during translation. Please try again."
+              );
+            },
+          });
+        }
+
+        $("#start-user").click(function () {
+          isUserListening = startListening(
+            userRecognition,
+            $("#start-user"),
+            $("#stop-user"),
+            $("#user-text"),
+            isUserListening,
+            $("#user-language").val(),
+            $("#target-language").val()
+          );
+        });
+
+        $("#stop-user").click(function () {
+          isUserListening = stopListening(
+            userRecognition,
+            $("#start-user"),
+            $("#stop-user"),
+            isUserListening
+          );
+        });
+
+        $("#start-target").click(function () {
+          isTargetListening = startListening(
+            targetRecognition,
+            $("#start-target"),
+            $("#stop-target"),
+            $("#target-text"),
+            isTargetListening,
+            $("#target-language").val(),
+            $("#user-language").val()
+          );
+        });
+
+        $("#stop-target").click(function () {
+          isTargetListening = stopListening(
+            targetRecognition,
+            $("#start-target"),
+            $("#stop-target"),
+            isTargetListening
+          );
+        });
+
+        $("#speak-user, #speak-target").click(function () {
+          const audioData =
+            window[$(this).prev().find("textarea").attr("id") + "_audio"];
+          if (audioData) {
+            const audio = new Audio("data:audio/mpeg;base64," + audioData);
+            audio.play();
+          } else {
+            alert("No audio available. Please translate some text first.");
+          }
+        });
+
+        function initializeRecognition() {
+          if ("webkitSpeechRecognition" in window) {
+            userRecognition = new webkitSpeechRecognition();
+            targetRecognition = new webkitSpeechRecognition();
+
+            setupRecognition(userRecognition, $("#user-language").val());
+            setupRecognition(targetRecognition, $("#target-language").val());
+
+            userRecognition.onresult = function (event) {
+              const result = event.results[event.results.length - 1];
+              if (result.isFinal) {
+                const text = result[0].transcript;
+                $("#user-text").val(text);
+                translate(
+                  text,
+                  $("#user-language").val(),
+                  $("#target-language").val(),
+                  $("#target-text")
+                );
+              }
+            };
+
+            targetRecognition.onresult = function (event) {
+              const result = event.results[event.results.length - 1];
+              if (result.isFinal) {
+                const text = result[0].transcript;
+                $("#target-text").val(text);
+                translate(
+                  text,
+                  $("#target-language").val(),
+                  $("#user-language").val(),
+                  $("#user-text")
+                );
+              }
+            };
+          } else {
+            alert("Speech recognition is not supported in this browser.");
+          }
+        }
+
+        $("#user-language, #target-language").change(function () {
+          initializeRecognition();
+        });
+
+        initializeRecognition();
+
+        // Toggle between landing page and app interface
+        $("#get-started-btn").click(function (e) {
+          e.preventDefault();
+          $("#landing-page").hide();
+          $("#app-interface").show();
+        });
+
+        $("#back-to-home").click(function () {
+          $("#app-interface").hide();
+          $("#landing-page").show();
+        });
+      });
+    </script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+
+  </body>
+</html>
