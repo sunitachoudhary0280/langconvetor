@@ -14,12 +14,12 @@ load_dotenv()
 app = Flask(__name__)
 
 # Groq API key
-groq_api_key = os.environ.get("GROQ_API_KEY", "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")
+groq_api_key = os.environ.get("GROQ_API_KEY", " use your groq api key ")
 client = Groq(api_key=groq_api_key)
 
 # ElevenLabs API key and voice ID
-ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY", "f10cdaecf1315d58b5da5ddc14d91529")
-ELEVENLABS_VOICE_ID = os.environ.get("ELEVENLABS_VOICE_ID", "jbU2N9qfPMHku9fZuJDQ")
+ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY", "USE YOUR ELEVENLABS_API_KEY OR PLACED HERE ")
+ELEVENLABS_VOICE_ID = os.environ.get("ELEVENLABS_VOICE_ID", "USE YOUR ELEVENLABS_VOICE_ID OR FORM FREE VOICE ID PLACED HERE")
 
 LANGUAGES = {
     "Afrikaans": "af", "Albanian": "sq", "Amharic": "am", "Arabic": "ar", "Armenian": "hy",
